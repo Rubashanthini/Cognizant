@@ -1,0 +1,11 @@
+CustomerManagement_Body.sql
+----------------------------
+CustomerID 7 balance: 900
+
+EmployeeManagement_Body.sql
+----------------------------
+EmployeeID 5 annual salary: 624000
+
+AccountOperations_Body.sql
+----------------------------
+CustomerID 1 total balance across all accounts: 1000
