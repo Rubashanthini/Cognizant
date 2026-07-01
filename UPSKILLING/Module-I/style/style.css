@@ -1,0 +1,315 @@
+/* =====================================
+GLOBAL RESET
+===================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  }
+
+/* =====================================
+BODY STYLES
+===================================== */
+
+body {
+font-family: 'Poppins', sans-serif;
+
+background-color: #f4f4f4;
+
+background-image:
+url("background.jpg");
+
+background-size: cover;
+background-position: center;
+
+line-height: 1.6;
+
+}
+
+/* =====================================
+HEADER / BANNER STYLES
+===================================== */
+
+#welcomeBanner {
+
+background: linear-gradient(
+    to right,
+    #0044cc,
+    #0088ff
+);
+
+color: white;
+text-align: center;
+
+padding: 20px;
+
+}
+
+/* =====================================
+SECTION HEADERS
+===================================== */
+
+h2 {
+
+background: linear-gradient(
+    to right,
+    #0066cc,
+    #66ccff
+);
+
+color: white;
+
+padding: 10px;
+margin: 15px 0;
+
+}
+
+/* =====================================
+EVENT CARD STYLES
+===================================== */
+
+.eventCard {
+
+border: 2px solid #333;
+
+padding: 15px;
+
+margin: 15px;
+
+background: rgba(
+    255,
+    255,
+    255,
+    0.8
+);
+
+}
+
+/* =====================================
+GROUPING SELECTOR
+===================================== */
+
+h3,
+p {
+
+color: #333;
+
+letter-spacing: 1px;
+
+}
+
+/* =====================================
+HIGHLIGHT CLASS
+===================================== */
+
+.highlight {
+
+background-color: yellow;
+
+font-weight: bold;
+
+}
+
+/* =====================================
+IMAGE STYLES
+===================================== */
+
+.event-img {
+border: 3px solid black;
+
+width: 200px;
+
+height: 150px;
+
+}
+
+/* =====================================
+TABLE STYLES
+===================================== */
+
+table {
+
+width: 80%;
+
+margin: auto;
+
+border-collapse: collapse;
+
+text-align: center;
+
+}
+
+th,
+td {
+
+border: 1px solid #333;
+
+padding: 10px;
+
+}
+
+tr:nth-child(even) {
+
+background-color: #eeeeee;
+
+}
+
+/* =====================================
+NAVIGATION MENU
+===================================== */
+
+nav ul {
+
+list-style-type: none;
+
+list-style-position: inside;
+
+}
+
+nav li {
+
+display: inline-block;
+
+margin: 10px;
+
+padding: 5px;
+
+}
+
+/* =====================================
+LINK STYLES
+===================================== */
+
+a:link {
+
+color: blue;
+
+}
+
+a:visited {
+
+
+color: purple;
+
+
+}
+
+a:hover {
+
+
+color: red;
+
+
+}
+
+a:active {
+
+color: green;
+
+
+}
+
+/* =====================================
+FORM STYLES
+===================================== */
+
+form {
+
+width: 60%;
+
+margin: auto;
+
+padding: 20px;
+
+border: 1px solid gray;
+
+}
+
+input,
+textarea,
+select {
+
+width: 100%;
+
+padding: 8px;
+
+margin-bottom: 10px;
+
+}
+
+input:focus,
+textarea:focus {
+
+outline: 3px solid orange;
+
+
+}
+
+/* =====================================
+HIDDEN VS DISPLAY NONE
+===================================== */
+
+.hidden-example {
+
+
+visibility: hidden;
+
+
+}
+
+.none-example {
+
+
+display: none;
+
+
+}
+
+/* =====================================
+MULTI COLUMN NEWS SECTION
+===================================== */
+
+.news {
+
+
+column-count: 2;
+
+column-gap: 30px;
+
+column-rule: 1px solid gray;
+
+margin: 20px;
+
+
+}
+
+/* =====================================
+RESPONSIVE DESIGN
+===================================== */
+
+@media screen and (max-width: 768px) {
+
+nav li {
+
+    display: block;
+}
+
+body {
+
+    font-size: 14px;
+}
+
+.event-img {
+
+    width: 120px;
+
+    height: 90px;
+}
+
+form {
+
+    width: 90%;
+}
+
+}

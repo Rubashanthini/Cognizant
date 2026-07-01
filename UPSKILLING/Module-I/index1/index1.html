@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Community Event Portal</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        #welcomeBanner {
+            background-color: blue;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        .event-img {
+    border: 3px solid black;
+    width: 200px;
+    height: 150px;
+}
+
+table {
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 10px;
+    text-align: center;
+}
+form {
+    width: 60%;
+    margin: auto;
+    border: 1px solid gray;
+    padding: 20px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+}
+
+.enlarged {
+    width: 400px !important;
+    height: 300px !important;
+}
+
+    </style>
+</head>
+
+
+
+<body>
+    <h1 style="color:red;">
+    Welcome to the Local Community Event Portal
+</h1>
+
+<p id="seatDisplay">Available Seats: 50</p>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="#home">Home</a> |
+        <a href="#events">Events</a> |
+        <a href="#contact">Contact</a> |
+        <a href="help.html" target="_blank">Help</a>
+    </nav>
+    <!-- Welcome Banner -->
+    <div id="welcomeBanner">
+        <h2>Welcome, Resident!</h2>
+        <p>
+            Register for upcoming events and enjoy
+            <span style="color:red; font-weight:bold;">
+                20% OFF on community workshop tickets!
+            </span>
+        </p>
+
+    </div>
+
+
+    <!-- Main -->
+    <main>
+
+        <section id="home">
+            <h1>Welcome to the Local Community Event Portal</h1>
+            <p>Find community events and services here.</p>
+        </section>
+
+        <section id="events">
+            <h2>Events</h2>
+            <p>Details of upcoming events will be displayed here.</p>
+            <label>Select Category:</label>
+    <select id="categoryFilter">
+        <option value="All">All</option>
+        <option value="Music">Music</option>
+        <option value="Workshop">Workshop</option>
+        <option value="Sports">Sports</option>
+    </select>
+
+    <!-- Search Box -->
+    <input type="text"
+           id="searchBox"
+           placeholder="Search Events">
+
+    <!-- Dynamic Events -->
+    
+
+        </section>
+        <section id="dynamicEvents">
+    <h2>Dynamic Events</h2>
+    <div id="eventContainer"></div>
+</section>
+        <div id="arrayOutput"></div>
+        <div id="eventList"></div>
+        <div id="functionOutput"></div>
+        <div id="loading"></div>
+        <p id="formError"></p>
+        <button
+        id="registerBtn"
+type="button"
+onclick="safeRegistration()">
+Register
+</button>
+        <!-- Event Gallery -->
+<section id="gallery">
+    <h2>Community Event Gallery</h2>
+
+    <table>
+        <tr>
+            <td>
+                <img src="event1.jpg" alt="Tree Plantation"
+                     title="Tree Plantation Drive"
+                     class="event-img"
+                     ondblclick="enlargeImage(this)">
+            
+                <p>Tree Plantation Drive</p>
+                
+            </td>
+
+            <td>
+                <img src="event2.jpg" alt="Food Festival"
+                     title="Food Festival"
+                     class="event-img">
+                <p>Food Festival</p>
+            </td>
+
+            <td>
+                <img src="event3.jpg" alt="Sports Event"
+                     title="Sports Day"
+                     class="event-img">
+                <p>Sports Day</p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <img src="event4.jpg" alt="Music Night"
+                     title="Music Night"
+                     class="event-img">
+                <p>Music Night</p>
+            </td>
+
+            <td>
+                <img src="event5.jpg" alt="Art Exhibition"
+                     title="Art Exhibition"
+                     class="event-img">
+                <p>Art Exhibition</p>
+            </td>
+
+            <td>
+                <img src="event6.jpg" alt="Community Meeting"
+                     title="Community Meeting"
+                     class="event-img">
+                <p>Community Meeting</p>
+            </td>
+        </tr>
+    </table>
+</section>
+<p id="apiResult"></p>
+<section id="registration">
+    <h2>Event Registration</h2>
+
+    <form id="eventForm">
+
+        <label>Name:</label><br>
+        <input type="text"
+               id="name"
+               placeholder="Enter your name"
+               required
+               autofocus><br><br>
+
+        <label>Email:</label><br>
+        <input type="email"
+               id="email"
+               placeholder="Enter your email"
+               required><br><br>
+
+        <label>Phone:</label><br>
+        <input type="text"
+               id="phone"
+               placeholder="Enter phone number"
+               onblur="validatePhone()"><br><br>
+
+        <label>Date:</label><br>
+        <input type="date" required><br><br>
+
+        <label>Event Type:</label><br>
+        <select id="eventType"
+                onchange="showFee()">
+            <option value="">Select Event</option>
+            <option value="Workshop">Workshop</option>
+            <option value="Sports">Sports</option>
+            <option value="Music">Music</option>
+        </select>
+
+        <p id="feeDisplay"></p>
+
+        <label>Feedback:</label><br>
+        <textarea id="feedback"
+                  placeholder="Enter feedback"
+                  onkeyup="countChars()"></textarea>
+
+        <p>Characters: <span id="charCount">0</span></p>
+
+        <button type="button"
+        onclick="safeRegistration()">
+    Register
+</button>
+
+        <br><br>
+
+        <output id="confirmation"></output>
+
+    </form>
+</section>
+<section id="functionDemo">
+    <h2>Function Demonstration</h2>
+
+    <button onclick="demoFunctions()">
+        Show Function Results
+    </button>
+
+    <div id="functionOutput"></div>
+</section>
+<section id="videoSection">
+
+    <h2>Event Promo Video</h2>
+
+    <video width="400"
+           controls
+           oncanplay="videoReady()">
+
+        <source src="promo.mp4"
+                type="video/mp4">
+
+    </video>
+
+    <p id="videoMessage"></p>
+
+</section>
+<section>
+
+    <h2>User Preferences</h2>
+
+    <button onclick="clearPreferences()">
+        Clear Preferences
+    </button>
+
+</section>
+<section>
+
+    <h2>Find Nearby Events</h2>
+
+    <button onclick="findLocation()">
+        Find Nearby Events
+    </button>
+
+    <p id="locationResult"></p>
+
+
+</section>
+<section>
+    <h2>Community Bulletin</h2>
+
+    <div class="news">
+
+        The city council is organizing
+        several community events this month.
+        Residents are encouraged to participate
+        in workshops, sports events,
+        cultural festivals and awareness drives.
+
+        Volunteers are welcome to join
+        community improvement projects and
+        environmental initiatives.
+
+    </div>
+</section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <p>Email: community@portal.com</p>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Local Community Event Portal</p>
+    </footer>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="main.js"></script>
+</body>
+
+</html>
