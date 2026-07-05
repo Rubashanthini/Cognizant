@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    applicationContext.xml
+
+    Primary Spring IoC XML configuration used by:
+      - Exercise 1: Bean definitions for BookService and BookRepository.
+      - Exercise 2: Wiring BookRepository into BookService (setter injection).
+      - Exercise 3: Enabling AspectJ support and registering the logging aspect.
+      - Exercise 5: XML Bean Configuration for the Spring IoC container.
+      - Exercise 7: Both constructor injection AND setter injection configured
+        for the bookRepository dependency of bookService.
+      - Exercise 8: Registering the aspect bean and enabling AspectJ auto-proxy
+        so Before/After advice is applied.
+
+    Loaded by com.library.application.SpringCoreMainApp via
+    ClassPathXmlApplicationContext("applicationContext.xml").
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- Exercise 1 / Exercise 5: Bean definition for BookRepository -->
+    <bean id="bookRepository" class="com.library.repository.BookRepository"/>
+
+    <!--
+        Exercise 1 / Exercise 2 / Exercise 5 / Exercise 7: Bean definition
+        for BookService.
+
+        constructor-arg  -> Constructor Injection of bookRepository (Exercise 7)
+        property         -> Setter Injection of bookRepository (Exercises 2 and 7)
+
+        Both are configured here purely to demonstrate that BookService
+        supports either style; Spring will call the constructor first and
+        then apply the property value via the setter.
+    -->
+    <bean id="bookService" class="com.library.service.BookService">
+        <constructor-arg ref="bookRepository"/>
+        <property name="bookRepository" ref="bookRepository"/>
+    </bean>
+
+    <!-- Exercise 3 / Exercise 8: Register the logging aspect as a bean -->
+    <bean id="loggingAspect" class="com.library.aspect.LoggingAspect"/>
+
+    <!--
+        Exercise 3 / Exercise 8: Enable AspectJ support / AspectJ auto proxy.
+        This tells Spring to automatically create proxies for any bean that
+        matches an @Aspect's pointcuts, applying the Before, After and
+        Around (execution time logging) advice declared in LoggingAspect.
+    -->
+    <aop:aspectj-autoproxy/>
+
+</beans>

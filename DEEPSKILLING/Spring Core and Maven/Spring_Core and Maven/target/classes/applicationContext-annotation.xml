@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    applicationContext-annotation.xml
+
+    Exercise 6: Configuring Beans with Annotations.
+
+    Instead of declaring <bean> elements explicitly (as in
+    applicationContext.xml), this configuration enables component-scanning
+    across the com.library package so that classes annotated with
+    @Service, @Repository, @Component and @Aspect are discovered and
+    registered automatically.
+
+    Loaded by com.library.application.AnnotationConfigMainApp via
+    ClassPathXmlApplicationContext("applicationContext-annotation.xml").
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--
+        Exercise 6: Enable Component Scanning for the com.library package.
+        This discovers:
+          - BookService        (@Service)
+          - BookRepository     (@Repository)
+          - LoggingAspect      (@Aspect + @Component)
+        and registers them as beans, with @Autowired-style constructor
+        injection wiring bookRepository into bookService automatically.
+    -->
+    <context:component-scan base-package="com.library"/>
+
+    <!-- Still enable AspectJ auto-proxy so LoggingAspect intercepts calls -->
+    <aop:aspectj-autoproxy/>
+
+</beans>

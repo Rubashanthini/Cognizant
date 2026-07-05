@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ============================================================
+         Exercise 9: Using Spring Boot parent POM simplifies
+         dependency management (versions, plugin defaults) for the
+         Spring Boot / Spring Data JPA / H2 REST CRUD part of the
+         project, while still allowing plain Spring Core / AOP
+         (Exercises 1-8) to run inside the same Maven project.
+         ============================================================ -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.18</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.library</groupId>
+    <artifactId>LibraryManagement</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>LibraryManagement</name>
+    <description>
+        Cognizant Digital Nurture 5.0 - Deep Skilling Engineering Concepts.
+        Single Maven project covering Spring Core, Spring AOP, XML and
+        annotation based configuration, Dependency Injection (setter and
+        constructor) and Spring Boot + Spring Data JPA + H2 REST CRUD API
+        for a Library Management application (Exercises 1 - 9).
+    </description>
+
+    <properties>
+        <!-- Exercise 4: Java 8 Compiler Plugin configuration -->
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <!-- ========================================================
+             Exercise 4 / Exercise 1: Spring Context (Spring Core / IoC)
+             Brought in transitively by spring-boot-starter, declared
+             explicitly here so the requirement is visible in the POM.
+             ======================================================== -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <!-- ========================================================
+             Exercise 3 / Exercise 4 / Exercise 8: Spring AOP + AspectJ
+             (Logging Aspect, Before/After advice, AspectJ auto-proxy,
+             execution time logging)
+             ======================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+        <!-- ========================================================
+             Exercise 4: Spring WebMVC (also powers the Exercise 9
+             REST Controller endpoints)
+             ======================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- ========================================================
+             Exercise 9: Spring Data JPA
+             ======================================================== -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- ========================================================
+             Exercise 9: H2 in-memory database
+             ======================================================== -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Testing support -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>LibraryManagement</finalName>
+        <plugins>
+
+            <!-- Exercise 4: Java 8 Compiler Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Spring Boot plugin: builds an executable jar for Exercise 9 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
