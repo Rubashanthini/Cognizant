@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+    Hands-on 2: Hibernate XML Configuration example.
+
+    This file maps the plain com.cognizant.ormlearn.hibernatexml.Employee
+    POJO to the "employee_xml" table WITHOUT using any annotations in the
+    Java class - all mapping metadata lives here, in this XML file.
+-->
+<hibernate-mapping>
+    <class name="com.cognizant.ormlearn.hibernatexml.Employee" table="employee_xml">
+
+        <id name="id" type="int" column="id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="firstName" column="first_name" type="string"/>
+        <property name="lastName" column="last_name" type="string"/>
+        <property name="salary" column="salary" type="int"/>
+
+    </class>
+</hibernate-mapping>

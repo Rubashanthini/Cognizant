@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<!--
+    Hands-on 2: Hibernate XML Configuration example.
+
+    Standalone Hibernate configuration (independent of Spring Boot's
+    application.properties) used purely to demonstrate the classic
+    SessionFactory / Session / Transaction workflow with an XML-mapped
+    entity.
+-->
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ormlearn?useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>
+
+        <!-- JDBC connection pool settings -->
+        <property name="hibernate.connection.pool_size">1</property>
+
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+        <!-- Echo all executed SQL to stdout -->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <!-- Create/update tables automatically for this standalone example -->
+        <property name="hbm2ddl.auto">update</property>
+
+        <!-- Mapping file -->
+        <mapping resource="hibernatexml/Employee.hbm.xml"/>
+
+    </session-factory>
+</hibernate-configuration>
