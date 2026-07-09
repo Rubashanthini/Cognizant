@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    country.xml
+    Exercise 4: Country bean loaded from XML configuration (constructor injection)
+    Exercise 5: Demonstrates Singleton (default) vs Prototype bean scope
+    Exercise 6: Demonstrates a <list> of <ref> beans (countryList)
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- ===================================================================
+         Exercise 4: Single Country bean - uses constructor-arg injection
+         Default scope is "singleton" (Exercise 5 - default behaviour)
+         =================================================================== -->
+    <bean id="country" class="com.cognizant.springlearn.Country">
+        <constructor-arg name="code" value="IN"/>
+        <constructor-arg name="name" value="India"/>
+    </bean>
+
+    <!-- ===================================================================
+         Exercise 5: Prototype scoped Country bean.
+         Each call to context.getBean("prototypeCountry") returns a NEW instance,
+         invoking the constructor every time - unlike the singleton bean above,
+         which is constructed only once and cached by the container.
+         =================================================================== -->
+    <bean id="prototypeCountry" class="com.cognizant.springlearn.Country" scope="prototype">
+        <constructor-arg name="code" value="US"/>
+        <constructor-arg name="name" value="United States"/>
+    </bean>
+
+    <!-- Explicit singleton bean used purely to contrast against the prototype bean above -->
+    <bean id="singletonCountry" class="com.cognizant.springlearn.Country" scope="singleton">
+        <constructor-arg name="code" value="DE"/>
+        <constructor-arg name="name" value="Germany"/>
+    </bean>
+
+    <!-- ===================================================================
+         Exercise 6: Four individual Country beans used to build a list
+         =================================================================== -->
+    <bean id="countryIndia" class="com.cognizant.springlearn.Country">
+        <constructor-arg name="code" value="IN"/>
+        <constructor-arg name="name" value="India"/>
+    </bean>
+
+    <bean id="countryUnitedStates" class="com.cognizant.springlearn.Country">
+        <constructor-arg name="code" value="US"/>
+        <constructor-arg name="name" value="United States"/>
+    </bean>
+
+    <bean id="countryGermany" class="com.cognizant.springlearn.Country">
+        <constructor-arg name="code" value="DE"/>
+        <constructor-arg name="name" value="Germany"/>
+    </bean>
+
+    <bean id="countryJapan" class="com.cognizant.springlearn.Country">
+        <constructor-arg name="code" value="JP"/>
+        <constructor-arg name="name" value="Japan"/>
+    </bean>
+
+    <!-- ArrayList bean named "countryList" referencing the four Country beans above -->
+    <bean id="countryList" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <ref bean="countryIndia"/>
+                <ref bean="countryUnitedStates"/>
+                <ref bean="countryGermany"/>
+                <ref bean="countryJapan"/>
+            </list>
+        </constructor-arg>
+    </bean>
+
+</beans>

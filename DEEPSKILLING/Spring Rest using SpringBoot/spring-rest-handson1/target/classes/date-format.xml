@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    date-format.xml
+    Exercise 2: Spring XML configuration defining a SimpleDateFormat bean
+    Pattern used: dd/MM/yyyy
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- SimpleDateFormat bean configured with pattern dd/MM/yyyy via constructor-arg -->
+    <bean id="dateFormatBean" class="java.text.SimpleDateFormat">
+        <constructor-arg value="dd/MM/yyyy"/>
+    </bean>
+
+</beans>
