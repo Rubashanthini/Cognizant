@@ -1,0 +1,106 @@
+version: "3.8"
+
+# =============================================================================
+# docker-compose.yml - MicroservicesCompositeHandsOn
+#
+# Brings up the full microservices ecosystem:
+#   - eureka-discovery-server : Service Registry               (port 8761)
+#   - account-service         : Account microservice            (port 8080)
+#   - loan-service             : Loan microservice               (port 8081)
+#   - greet-service            : "Hello World" microservice      (port 8082)
+#   - api-gateway              : Spring Cloud Gateway            (port 9090)
+#
+# Each service builds from its own module directory using the Dockerfile
+# located there. Services depend on eureka-discovery-server starting
+# first (via "depends_on"), and all containers share the "microservices-net"
+# bridge network so they can resolve each other by container/service name
+# if needed (Eureka URLs below use the eureka-discovery-server service name).
+# =============================================================================
+
+services:
+
+  eureka-discovery-server:
+    build:
+      context: .
+      dockerfile: eureka-discovery-server/Dockerfile
+    container_name: eureka-discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-net
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8761/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  account-service:
+    build:
+      context: .
+      dockerfile: account-service/Dockerfile
+    container_name: account-service
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-discovery-server:8761/eureka/
+    depends_on:
+      eureka-discovery-server:
+        condition: service_healthy
+    networks:
+      - microservices-net
+
+  loan-service:
+    build:
+      context: .
+      dockerfile: loan-service/Dockerfile
+    container_name: loan-service
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-discovery-server:8761/eureka/
+    depends_on:
+      eureka-discovery-server:
+        condition: service_healthy
+    networks:
+      - microservices-net
+
+  greet-service:
+    build:
+      context: .
+      dockerfile: greet-service/Dockerfile
+    container_name: greet-service
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-discovery-server:8761/eureka/
+    depends_on:
+      eureka-discovery-server:
+        condition: service_healthy
+    networks:
+      - microservices-net
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "9090:9090"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-discovery-server:8761/eureka/
+    depends_on:
+      eureka-discovery-server:
+        condition: service_healthy
+      account-service:
+        condition: service_started
+      loan-service:
+        condition: service_started
+      greet-service:
+        condition: service_started
+    networks:
+      - microservices-net
+
+networks:
+  microservices-net:
+    driver: bridge

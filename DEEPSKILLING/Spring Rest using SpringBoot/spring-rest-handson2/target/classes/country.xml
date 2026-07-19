@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <!-- ===================================================== -->
+    <!-- Individual Country Beans                               -->
+    <!-- ===================================================== -->
+
+    <!-- India Bean: used directly by Exercise 3 (GET /country) -->
+    <bean id="india" class="com.cognizant.springlearn.model.Country">
+        <property name="code" value="IN"/>
+        <property name="name" value="India"/>
+        <property name="capital" value="New Delhi"/>
+        <property name="population" value="1428600000"/>
+    </bean>
+
+    <bean id="unitedStates" class="com.cognizant.springlearn.model.Country">
+        <property name="code" value="US"/>
+        <property name="name" value="United States"/>
+        <property name="capital" value="Washington, D.C."/>
+        <property name="population" value="331900000"/>
+    </bean>
+
+    <bean id="germany" class="com.cognizant.springlearn.model.Country">
+        <property name="code" value="DE"/>
+        <property name="name" value="Germany"/>
+        <property name="capital" value="Berlin"/>
+        <property name="population" value="83200000"/>
+    </bean>
+
+    <bean id="japan" class="com.cognizant.springlearn.model.Country">
+        <property name="code" value="JP"/>
+        <property name="name" value="Japan"/>
+        <property name="capital" value="Tokyo"/>
+        <property name="population" value="125700000"/>
+    </bean>
+
+    <!-- ===================================================== -->
+    <!-- countryList Bean: used by Exercise 4 (GET /countries)  -->
+    <!-- and Exercise 5 (GET /countries/{code})                 -->
+    <!-- ===================================================== -->
+    <util:list id="countryList" list-class="java.util.ArrayList" value-type="com.cognizant.springlearn.model.Country">
+        <ref bean="india"/>
+        <ref bean="unitedStates"/>
+        <ref bean="germany"/>
+        <ref bean="japan"/>
+    </util:list>
+
+</beans>

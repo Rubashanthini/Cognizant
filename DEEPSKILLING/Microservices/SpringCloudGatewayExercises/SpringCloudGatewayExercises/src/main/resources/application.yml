@@ -1,0 +1,137 @@
+# ==============================================================================
+# Spring Cloud Gateway Exercises - Application Configuration
+# Cognizant Digital Nurture 5.0
+# ==============================================================================
+
+server:
+  port: 8080
+
+spring:
+  application:
+    name: spring-cloud-gateway-exercises
+
+  cloud:
+    gateway:
+      routes:
+        # ------------------------------------------------------------------
+        # Exercise 1: Edge Services - Routing and Filtering
+        # A simple route forwarding /example/** requests to a fixed URI.
+        # The global LoggingFilter automatically logs every request that
+        # passes through this (and every other) route.
+        # ------------------------------------------------------------------
+        - id: example_route
+          uri: http://localhost:8080
+          predicates:
+            - Path=/example/**
+
+        # ------------------------------------------------------------------
+        # Exercise 2: Load Balancing
+        # Routes requests to the logical "example-service" using the lb://
+        # scheme. Spring Cloud LoadBalancer resolves this against the
+        # instances declared under spring.cloud.discovery.client.simple
+        # below, using the RandomLoadBalancer strategy defined in
+        # LoadBalancerConfiguration.
+        # ------------------------------------------------------------------
+        - id: load_balanced_route
+          uri: lb://example-service
+          predicates:
+            - Path=/loadbalanced/**
+
+        # ------------------------------------------------------------------
+        # Exercise 3: Resilience Patterns
+        # Routes requests to an artificially slow endpoint, protected by a
+        # Circuit Breaker + Time Limiter. If the call fails or times out,
+        # the request is forwarded to the local fallback endpoint.
+        # ------------------------------------------------------------------
+        - id: resilient_route
+          uri: http://localhost:8080
+          predicates:
+            - Path=/slow/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: exampleCircuitBreaker
+                fallbackUri: forward:/fallback/example
+
+      # Enables discovery-locator so that any registered service can
+      # optionally be reached at /<service-id>/** automatically (not required
+      # by the exercises, but useful for exploration).
+      discovery:
+        locator:
+          enabled: false
+
+    # ----------------------------------------------------------------------
+    # Simulated service registry (Simple Discovery Client)
+    # In the absence of a full service registry (e.g. Eureka/Consul), this
+    # statically declares the instances available for the logical service
+    # name "example-service", which the RandomLoadBalancer selects from.
+    #
+    # To observe real load-balancing across genuinely separate processes,
+    # start additional instances of this same application on different
+    # ports (e.g. --server.port=8081, --server.port=8082) and add matching
+    # entries below.
+    # ----------------------------------------------------------------------
+    discovery:
+      client:
+        simple:
+          instances:
+            example-service:
+              - uri: http://localhost:8080
+                instanceId: example-service-1
+              - uri: http://localhost:8080
+                instanceId: example-service-2
+              - uri: http://localhost:8080
+                instanceId: example-service-3
+
+    loadbalancer:
+      cache:
+        enabled: true
+
+# ==============================================================================
+# Resilience4j Configuration (Exercise 3)
+# ==============================================================================
+resilience4j:
+  circuitbreaker:
+    instances:
+      exampleCircuitBreaker:
+        register-health-indicator: true
+        sliding-window-size: 10
+        sliding-window-type: COUNT_BASED
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+        minimum-number-of-calls: 5
+  timelimiter:
+    instances:
+      exampleCircuitBreaker:
+        timeout-duration: 4s
+        cancel-running-future: true
+
+# ==============================================================================
+# Actuator (exposes health endpoint, including circuit breaker health)
+# ==============================================================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,gateway,circuitbreakers
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+
+# ==============================================================================
+# Logging Configuration
+# ==============================================================================
+logging:
+  level:
+    root: INFO
+    com.cognizant.gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.loadbalancer: DEBUG
+    io.github.resilience4j: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

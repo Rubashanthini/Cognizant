@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: centralized-authentication-sso
+
+  # ---------------------------------------------------------------------
+  # Exercise 1: OAuth2 Login / OpenID Connect client configuration
+  # Replace the placeholder client-id / client-secret with credentials
+  # from the Google Cloud Console (APIs & Services > Credentials).
+  # ---------------------------------------------------------------------
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: YOUR_GOOGLE_CLIENT_ID
+            client-secret: YOUR_GOOGLE_CLIENT_SECRET
+            scope:
+              - openid
+              - profile
+              - email
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-name: Google
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+            jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+            user-name-attribute: sub
+
+      # ---------------------------------------------------------------
+      # Exercise 2: OAuth2 Resource Server configuration.
+      # Point issuer-uri at a running Authorization Server (e.g. a
+      # Spring Authorization Server or Keycloak realm) that exposes
+      # OpenID Connect discovery at {issuer-uri}/.well-known/openid-configuration
+      # ---------------------------------------------------------------
+      resourceserver:
+        jwt:
+          issuer-uri: https://issuer.example.com
+
+    # -------------------------------------------------------------------
+    # Exercise 3: Self-issued JWT configuration.
+    # secret MUST be Base64-encoded and decode to >= 256 bits for HS256.
+    # Generate one with: openssl rand -base64 32
+    # -------------------------------------------------------------------
+    jwt:
+      secret: c2VjcmV0LWtleS1mb3ItY2VudHJhbGl6ZWQtYXV0aC1kZW1vLTEyMzQ1Ng==
+      expiration-ms: 3600000
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.security: INFO

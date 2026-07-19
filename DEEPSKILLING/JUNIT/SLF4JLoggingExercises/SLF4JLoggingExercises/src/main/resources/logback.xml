@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Logback configuration file for the SLF4JLoggingExercises project.
+
+    Defines two appenders:
+      1. CONSOLE - writes formatted log statements to standard output.
+      2. FILE    - writes formatted log statements to app.log, which is
+                   created automatically in the project's working directory
+                   the first time the application logs a message.
+
+    The root logger level is set to TRACE so that every exercise class
+    (LoggingExample, ParameterizedLoggingExample, AppenderLoggingExample)
+    can demonstrate all five logging levels: TRACE, DEBUG, INFO, WARN, ERROR.
+-->
+<configuration>
+
+    <!-- ==================================================== -->
+    <!-- CONSOLE APPENDER                                      -->
+    <!-- ==================================================== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!--
+                Pattern breakdown:
+                %d{yyyy-MM-dd HH:mm:ss.SSS} - timestamp
+                [%thread]                  - name of the thread that logged the message
+                %-5level                   - log level, left-justified, padded to 5 chars
+                %logger{36}                - logger name (class), truncated to 36 chars
+                %msg%n                     - the actual log message, followed by a newline
+            -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ==================================================== -->
+    <!-- FILE APPENDER                                         -->
+    <!-- ==================================================== -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <!-- Log file will be created automatically at project root as app.log -->
+        <file>app.log</file>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ==================================================== -->
+    <!-- ROOT LOGGER                                           -->
+    <!-- ==================================================== -->
+    <!--
+        Level is set to TRACE so all exercises (which demonstrate every
+        level from TRACE through ERROR) produce visible output on both
+        the console and in app.log.
+    -->
+    <root level="TRACE">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>

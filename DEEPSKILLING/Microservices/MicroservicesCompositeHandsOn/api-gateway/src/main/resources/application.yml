@@ -1,0 +1,69 @@
+# =============================================================================
+# api-gateway configuration
+# =============================================================================
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      # Explicit route definitions. Each route load-balances ("lb://")
+      # against the logical Eureka service id and strips the first path
+      # segment (the service name prefix) before forwarding downstream.
+      routes:
+        - id: greet-service-route
+          uri: lb://GREET-SERVICE
+          predicates:
+            - Path=/greet-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: account-service-route
+          uri: lb://ACCOUNT-SERVICE
+          predicates:
+            - Path=/account-service/**
+          filters:
+            - StripPrefix=1
+
+        - id: loan-service-route
+          uri: lb://LOAN-SERVICE
+          predicates:
+            - Path=/loan-service/**
+          filters:
+            - StripPrefix=1
+
+      # In addition to the explicit routes above, also enable the
+      # discovery locator so that any other service registered in
+      # Eureka is automatically reachable at
+      # http://localhost:9090/<lower-case-service-id>/**
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+# api-gateway listens on port 9090
+server:
+  port: 9090
+
+# Location of the Eureka Discovery Server that this gateway registers with
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+# Expose actuator endpoints, including the gateway-specific routes
+# endpoint, useful for verifying route configuration at runtime.
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.cognizant.gateway: INFO
+    org.springframework.cloud.gateway: INFO

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Root aggregator POM for the MicroservicesCompositeHandsOn project.
+
+    This project demonstrates a complete microservices architecture using:
+      - Spring Boot 3.2.x
+      - Spring Cloud 2023.0.x (Leaf release train)
+      - Netflix Eureka for Service Discovery
+      - Spring Cloud Gateway for API Gateway / routing
+      - A shared common-library module for cross-cutting DTOs
+
+    Modules:
+      1. common-library          - Shared DTOs used across services
+      2. eureka-discovery-server - Service Registry (port 8761)
+      3. account-service         - Account microservice (port 8080)
+      4. loan-service            - Loan microservice (port 8081)
+      5. greet-service           - Simple "Hello World" microservice (port 8082)
+      6. api-gateway             - Spring Cloud Gateway (port 9090)
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.cognizant</groupId>
+    <artifactId>MicroservicesCompositeHandsOn</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>MicroservicesCompositeHandsOn</name>
+    <description>
+        Composite hands-on Maven multi-module project showcasing microservices with
+        Spring Boot 3.x, Spring Cloud 2023.x, Eureka Discovery and Spring Cloud Gateway.
+    </description>
+
+    <!--
+        We inherit directly from spring-boot-starter-parent so that every child module
+        automatically gets sane defaults for compiler plugin, resource filtering,
+        repackaging, and dependency version management for common libraries
+        (Jackson, JUnit 5, etc.) without each module having to redeclare them.
+    -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring-cloud.version>2023.0.1</spring-cloud.version>
+    </properties>
+
+    <!--
+        Import the Spring Cloud BOM (Bill Of Materials) so that all Spring Cloud
+        starters used in child modules (Eureka Server, Eureka Client, Gateway)
+        resolve to mutually compatible versions without each module needing
+        to pin an explicit version number.
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <modules>
+        <module>common-library</module>
+        <module>eureka-discovery-server</module>
+        <module>account-service</module>
+        <module>loan-service</module>
+        <module>greet-service</module>
+        <module>api-gateway</module>
+    </modules>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ==================================================== -->
+    <!-- PROJECT COORDINATES                                   -->
+    <!-- ==================================================== -->
+    <groupId>com.cognizant</groupId>
+    <artifactId>slf4j-logging-exercises</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>SLF4JLoggingExercises</name>
+    <description>
+        Cognizant Digital Nurture 5.0 - SLF4J Logging Exercises.
+        Demonstrates basic logging, parameterized logging, and multiple
+        appenders (Console + File) using SLF4J and Logback.
+    </description>
+
+    <!-- ==================================================== -->
+    <!-- PROPERTIES                                            -->
+    <!-- ==================================================== -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+
+        <slf4j.version>1.7.30</slf4j.version>
+        <logback.version>1.2.3</logback.version>
+        <junit.jupiter.version>5.8.2</junit.jupiter.version>
+
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+        <exec.plugin.version>3.1.0</exec.plugin.version>
+
+        <!-- Main class used by exec-maven-plugin and manifest -->
+        <main.class>com.cognizant.logging.LoggingExample</main.class>
+    </properties>
+
+    <!-- ==================================================== -->
+    <!-- DEPENDENCIES                                          -->
+    <!-- ==================================================== -->
+    <dependencies>
+
+        <!-- SLF4J API -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- Logback Classic (SLF4J implementation) -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <!-- JUnit Jupiter (JUnit 5) for unit testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <!-- ==================================================== -->
+    <!-- BUILD / PLUGINS                                       -->
+    <!-- ==================================================== -->
+    <build>
+        <finalName>slf4j-logging-exercises</finalName>
+        <plugins>
+
+            <!-- Compiler Plugin: enforce Java 8 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Surefire Plugin: run JUnit 5 tests during 'mvn test' / 'mvn install' -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+            </plugin>
+
+            <!-- Exec Plugin: allows running via 'mvn exec:java' -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec.plugin.version}</version>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                </configuration>
+            </plugin>
+
+            <!-- Jar Plugin: set Main-Class in manifest for 'java -jar' -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${main.class}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

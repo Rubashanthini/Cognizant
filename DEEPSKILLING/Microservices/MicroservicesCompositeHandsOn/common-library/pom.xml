@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    common-library
+
+    A plain Java library (packaged as a normal "jar", NOT a Spring Boot
+    executable jar) that holds Data Transfer Objects (DTOs) shared by the
+    account-service, loan-service and greet-service modules.
+
+    Because this is a shared library and not a runnable Spring Boot
+    application, it deliberately does NOT apply the spring-boot-maven-plugin
+    repackage goal.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.cognizant</groupId>
+        <artifactId>MicroservicesCompositeHandsOn</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>common-library</artifactId>
+    <packaging>jar</packaging>
+
+    <name>common-library</name>
+    <description>Shared DTOs used across the account, loan and greet microservices.</description>
+
+    <dependencies>
+        <!-- Needed only for @NotNull / Bean Validation style annotations used on DTOs -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+
+        <!-- Test scope dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>common-library</finalName>
+        <plugins>
+            <!--
+                Skip the Spring Boot repackage goal entirely for this module:
+                common-library is a plain reusable JAR, not an executable
+                Spring Boot application, so we do not want a "fat jar" or a
+                required main class.
+            -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
